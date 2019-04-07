@@ -1,17 +1,27 @@
 package package1;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Delta {
 
 	private LinkedList<Loop> loops;
 	private LinkedList<Loop> nonTouching;
+	private ArrayList<LinkedList<Loop>> combination = new ArrayList<LinkedList<Loop>>();
 	private boolean flag = false;
 	private String symbol = "";
 	private float value = 1;
 
 	public Delta(LinkedList<Loop> loops) {
 		this.loops = loops;
+	}
+
+	public ArrayList<LinkedList<Loop>> getCombination() {
+		return combination;
+	}
+
+	public void setCombination(ArrayList<LinkedList<Loop>> combination) {
+		this.combination = combination;
 	}
 
 	public float getValue() {
@@ -56,6 +66,8 @@ public class Delta {
 					if (!touching) {
 						nonTouchingLoop.setGain(second.getGain() + first.getGain());
 						nonTouchingLoop.setGainVal(second.getGainVal() * first.getGainVal());
+						nonTouchingLoop.getNonTouching().add(i);
+						nonTouchingLoop.getNonTouching().add(j);
 						nonTouching.add(nonTouchingLoop);
 					}
 				}
@@ -85,12 +97,17 @@ public class Delta {
 				if (!touching) {
 					nonTouchingLoop.setGain(second.getGain() + first.getGain());
 					nonTouchingLoop.setGainVal(second.getGainVal() * first.getGainVal());
+					nonTouchingLoop.getNonTouching().add(i);
+					for (int z = 0; z < second.getNonTouching().size(); z++) {
+						nonTouchingLoop.getNonTouching().add(second.getNonTouching().get(z));
+					}
 					nonTouching.add(nonTouchingLoop);
 				}
 			}
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void Value() {
 		boolean sign = true;
 		for (int i = 0; i < loops.size(); i++) {
@@ -112,6 +129,7 @@ public class Delta {
 		getNonTouchingLoops(loops);
 		flag = true;
 		while (!nonTouching.isEmpty()) {
+			combination.add((LinkedList<Loop>) nonTouching.clone());
 			for (int i = 0; i < nonTouching.size(); i++) {
 				Loop x = nonTouching.get(i);
 				if (x.getGain().length() == 0) {

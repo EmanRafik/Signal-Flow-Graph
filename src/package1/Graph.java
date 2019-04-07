@@ -1,5 +1,6 @@
 package package1;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,6 +21,7 @@ public class Graph {
 	private LinkedList<String> gainSympolb = new LinkedList<String>();
 	private LinkedList<Float> gainValueb = new LinkedList<Float>();
 	private LinkedList<Path> pathsb = new LinkedList<Path>();
+	private ArrayList<LinkedList<Loop>> nonTouchingLoops;
 	private Delta delta;
 	private boolean flag;
 
@@ -32,6 +34,14 @@ public class Graph {
 			instance = new Graph();
 		}
 		return instance;
+	}
+
+	public ArrayList<LinkedList<Loop>> getNonTouchingLoops() {
+		return nonTouchingLoops;
+	}
+
+	public void setNonTouchingLoops(ArrayList<LinkedList<Loop>> nonTouchingLoops) {
+		this.nonTouchingLoops = nonTouchingLoops;
 	}
 
 	public LinkedList<Path> getPaths() {
@@ -84,6 +94,7 @@ public class Graph {
 		for (int i = 0; i < paths.size(); i++) {
 			paths.get(i).setDelta();
 		}
+		nonTouchingLoops = delta.getCombination();
 	}
 
 	public LinkedList<Path> getPathsb() {

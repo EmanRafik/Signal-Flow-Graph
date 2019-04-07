@@ -1,6 +1,7 @@
 package package1;
 
 import javafx.application.Application;
+import javafx.geometry.NodeOrientation;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -21,6 +22,10 @@ public class GraphGui extends Application {
 	private final int  startX = 100;
 	private final int startY = 350;
 	private final int space = 200;
+	private final int radius = 15;
+	private int forwardConst = -60;
+	private int backwardConst = -60;
+	private final double strokeWidth = 2;
 	
 	
 	public static void main(String[] args) {
@@ -49,24 +54,31 @@ public class GraphGui extends Application {
         	Circle c = new Circle();
         	c.setCenterX(startX + i*space);
         	c.setCenterY(startY);
-        	c.setRadius(15);
+        	c.setRadius(radius);
+        	c.setFill(Color.TRANSPARENT);
+        	c.setStrokeWidth(strokeWidth);
+        	c.setStroke(Color.BLACK);
         	g.getChildren().add(c);
         }
         for (int i = 0; i < graph.length; i++) {
         	for (int j = 0; j < graph.length; j++) {
         		if (graph[i][j] == 1 && (j - i)==1) {
         			Line l = new Line();
-        			l.setStartX(startX+i*space);
+        			l.setStartX(startX+i*space+radius);
         			l.setStartY(startY);
         			l.setEndY(startY);
-        			l.setEndX(startX+(i+1)*space);
+        			l.setEndX(startX+(i+1)*space-radius);
+        			l.setStrokeWidth(strokeWidth);
         			g.getChildren().add(l);
         			double[] doubleArray = {
-        				startX+i*space+space/2,startY-5,
-        				startX+i*space+space/2,startY+5,
-        				startX+i*space+space/2+5,startY
+        				startX+j*space-radius-10,startY-10,
+        				startX+j*space-radius-10,startY+10,
+        				startX+j*space-radius,startY
         			};
         			Polygon t = new Polygon(doubleArray);
+        			t.setStroke(Color.BLACK);
+        			t.setFill(Color.TRANSPARENT);
+        			t.setStrokeWidth(strokeWidth);
         			g.getChildren().add(t);
         			Text text = new Text();
         			text.setText(gain[i][j]);
@@ -77,14 +89,28 @@ public class GraphGui extends Application {
         			QuadCurve q = new QuadCurve();
         			q.setStartX(startX+i*space);
         			q.setEndX(startX+j*space);
-        			q.setStartY(startY);
-        			q.setEndY(startY);
+        			q.setStartY(startY-radius);
+        			q.setEndY(startY-radius);
         			q.setControlX(startX+((j+i)/2)*space);
-        			q.setControlY(startY-space-j*20);
+        			q.setControlY(startY-space-j*20-forwardConst);
+        			q.setStrokeWidth(strokeWidth);
+        			forwardConst+=20;
         			q.setStroke(Color.BLACK);
         			q.setFill(Color.TRANSPARENT);
         			g.getChildren().add(q);
-        			//direction
+
+        			double[] doubleArray = {
+            			startX + j*space,startY -radius,
+            			startX + j*space-20, startY -radius-20,
+            			startX + j*space-20,startY -radius
+            		};
+            		Polygon t = new Polygon(doubleArray);
+            		t.setStroke(Color.BLACK);
+            		t.setFill(Color.TRANSPARENT);
+            		t.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+            		t.setStrokeWidth(strokeWidth);
+            		g.getChildren().add(t);
+            			
         			Text text = new Text();
         			text.setText(gain[i][j]);
         			text.setX(startX+((i+j+1)/2)*space+space/2);
@@ -94,14 +120,28 @@ public class GraphGui extends Application {
         			QuadCurve q = new QuadCurve();
         			q.setStartX(startX+i*space);
         			q.setEndX(startX+j*space);
-        			q.setStartY(startY);
-        			q.setEndY(startY);
+        			q.setStartY(startY+radius);
+        			q.setEndY(startY+radius);
         			q.setControlX(startX+((j+i)/2)*space+space/2);
-        			q.setControlY(startY+space+j*20);
+        			q.setControlY(startY+space+j*20+backwardConst);
+        			backwardConst+=20;
         			q.setStroke(Color.BLACK);
         			q.setFill(Color.TRANSPARENT);
+        			q.setStrokeWidth(strokeWidth);
         			g.getChildren().add(q);
-        			//direction
+        			
+        			double[] doubleArray = {
+                			startX + j*space,startY +radius,
+                			startX + j*space+20, startY +radius+20,
+                			startX + j*space+20,startY +radius
+                		};
+                		Polygon t = new Polygon(doubleArray);
+                		t.setStroke(Color.BLACK);
+                		t.setFill(Color.TRANSPARENT);
+                		t.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+                		t.setStrokeWidth(strokeWidth);
+                		g.getChildren().add(t);
+
         			Text text = new Text();
         			text.setText(gain[i][j]);
         			text.setX(startX+((i+j)/2)*space+space/2);
@@ -111,12 +151,13 @@ public class GraphGui extends Application {
         			QuadCurve q = new QuadCurve();
         			q.setStartX(startX+i*space + 9);
         			q.setEndX(startX+j*space - 9);
-        			q.setStartY(startY);
-        			q.setEndY(startY);
+        			q.setStartY(startY+radius);
+        			q.setEndY(startY+radius);
         			q.setControlX(startX+i*space);
         			q.setControlY(startY+space/2);
         			q.setStroke(Color.BLACK);
         			q.setFill(Color.TRANSPARENT);
+        			q.setStrokeWidth(strokeWidth);
         			g.getChildren().add(q);
         			//direction
         			Text text = new Text();

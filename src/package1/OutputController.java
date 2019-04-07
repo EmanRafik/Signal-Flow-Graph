@@ -1,5 +1,7 @@
 package package1;
 
+import java.util.LinkedList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -54,6 +56,21 @@ public class OutputController {
 					loops.appendText(",");
 				} else {
 					loops.appendText(")\t Gain = " + l.getGainVal() + " " + l.getGain() + "\n");
+				}
+			}
+		}
+		for (int i = 0; i < g.getNonTouchingLoops().size(); i++) {
+			loops.appendText("\n" + Integer.toString(i+1) + "non-touching loops:\n");
+			LinkedList<Loop> x = g.getNonTouchingLoops().get(i);
+			for (int j = 0; j < x.size(); j++) {
+				Loop y = x.get(j);
+				for (int k = 0; k < y.getNonTouching().size(); k++) {
+					loops.appendText("L" + Integer.toString(k+1));
+					if (k < y.getNonTouching().size()-1) {
+						loops.appendText(", ");
+					}else {
+						loops.appendText("\n");
+					}
 				}
 			}
 		}

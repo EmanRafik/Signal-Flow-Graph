@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="package1.GuiController">
+   <children>
+      <TextField fx:id="noOfNodes" layoutX="278.0" layoutY="87.0" prefHeight="31.0" prefWidth="106.0" />
+      <Label layoutX="50.0" layoutY="87.0" prefHeight="31.0" prefWidth="179.0" text="Enter Number of Nodes">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Button fx:id="enterNoOfNodes" layoutX="488.0" layoutY="87.0" mnemonicParsing="false" onAction="#enterN" text="Enter" />
+      <Label layoutX="50.0" layoutY="163.0" prefHeight="21.0" prefWidth="179.0" text="Enter Edges with Gain">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="startEdge" layoutX="68.0" layoutY="233.0" prefHeight="31.0" prefWidth="81.0" />
+      <Label layoutX="68.0" layoutY="200.0" prefHeight="21.0" prefWidth="81.0" text="Start Node" />
+      <Label layoutX="196.0" layoutY="201.0" prefHeight="21.0" prefWidth="81.0" text="End Node" />
+      <TextField fx:id="endEdge" layoutX="196.0" layoutY="234.0" prefHeight="31.0" prefWidth="81.0" />
+      <Label layoutX="331.0" layoutY="201.0" prefHeight="21.0" prefWidth="106.0" text="Gain" />
+      <TextField fx:id="gain" layoutX="331.0" layoutY="234.0" prefHeight="31.0" prefWidth="106.0" />
+      <Button fx:id="enterEdge" disable="true" layoutX="488.0" layoutY="233.0" mnemonicParsing="false" onAction="#enterEdge" text="Enter" />
+      <Button fx:id="finish" disable="true" layoutX="444.0" layoutY="321.0" mnemonicParsing="false" onAction="#finish" prefHeight="31.0" prefWidth="121.0" text="Finish">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>
