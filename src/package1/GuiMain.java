@@ -26,6 +26,7 @@ public class GuiMain extends Application {
         primaryStage.setY(primaryScreenBounds.getMinY());
         primaryStage.setWidth(primaryScreenBounds.getWidth());
         primaryStage.setHeight(primaryScreenBounds.getHeight());
+        
 		
         primaryStage.setTitle("Signal Flow Graph");
 		primaryStage.show();

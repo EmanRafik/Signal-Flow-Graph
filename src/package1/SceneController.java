@@ -1,9 +1,12 @@
 package package1;
 
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.NodeOrientation;
+import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -53,7 +56,8 @@ public class SceneController {
 	public void showGraph() {
 		Group root = new Group();
 		scene.setRoot(root);
-		
+		graph = g.getGraph();
+		gain = g.getGain();
 Group g = new Group();
         
         for (int i = 0; i < graph.length; i++) {
@@ -175,5 +179,6 @@ Group g = new Group();
         	}
         }
         root.getChildren().add(g);
+        
 	}
 }

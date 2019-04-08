@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.util.Pair;
 
 public class Graph {
 
@@ -12,8 +13,8 @@ public class Graph {
 	private LinkedList<Path> temp = new LinkedList<Path>();
 	private LinkedList<Loop> loops = new LinkedList<Loop>();
 	private int n = 5;
-	private int[][] graph = {{0,1,0,0,0,0},{0,0,1,1,1,0},{0,1,0,1,0,0},{0,0,1,1,1,0},{0,0,0,0,0,1},{0,0,0,0,0,0}};
-	private String[][] gain = {{"0","1","0","0","0","0"},{"0","0","1","1","1","0"},{"0","-1","0","1","0","0"},{"0","0","-1","-1","1","0"},{"0","0","0","0","0","1"},{"0","0","0","0","0","0"}};
+	private int[][] graph; 
+	private String[][] gain; 
 	private LinkedList<Integer> path = new LinkedList<Integer>();
 	private LinkedList<String> gainSympol = new LinkedList<String>();
 	private LinkedList<Float> gainValue = new LinkedList<Float>();
@@ -21,12 +22,21 @@ public class Graph {
 	private LinkedList<String> gainSympolb = new LinkedList<String>();
 	private LinkedList<Float> gainValueb = new LinkedList<Float>();
 	private LinkedList<Path> pathsb = new LinkedList<Path>();
+	@SuppressWarnings("rawtypes")
+	private LinkedList<Pair> reqP = new LinkedList<Pair>();
+	@SuppressWarnings("rawtypes")
+	public LinkedList<Pair> getReqP() {
+		return reqP;
+	}
+
+	public void setReqP(@SuppressWarnings("rawtypes") LinkedList<Pair> reqP) {
+		this.reqP = reqP;
+	}
+
 	private ArrayList<LinkedList<Loop>> nonTouchingLoops;
 	private Delta delta;
-	private boolean flag;
 
 	private Graph() {
-		flag = true;
 	}
 
 	public static synchronized Graph getInstance() {
@@ -47,10 +57,6 @@ public class Graph {
 	public LinkedList<Path> getPaths() {
 		return paths;
 	}
-
-	/*public void setPaths(LinkedList<Path> paths) {
-		this.paths = paths;
-	}*/
 
 	public LinkedList<Loop> getLoops() {
 		return loops;
@@ -230,6 +236,38 @@ public class Graph {
 		return temp;
 	}
 
+	public LinkedList<Path> getTemp() {
+		return temp;
+	}
+
+	public void setTemp(LinkedList<Path> temp) {
+		this.temp = temp;
+	}
+
+	public LinkedList<Integer> getPath() {
+		return path;
+	}
+
+	public void setPath(LinkedList<Integer> path) {
+		this.path = path;
+	}
+
+	public LinkedList<String> getGainSympol() {
+		return gainSympol;
+	}
+
+	public void setGainSympol(LinkedList<String> gainSympol) {
+		this.gainSympol = gainSympol;
+	}
+
+	public LinkedList<Float> getGainValue() {
+		return gainValue;
+	}
+
+	public void setGainValue(LinkedList<Float> gainValue) {
+		this.gainValue = gainValue;
+	}
+
 	public boolean isNumeric(String strNum) {
 		String REGEX = "(-)?\\d+(\\.\\d+)?";
 		Pattern pattern = Pattern.compile(REGEX);
@@ -245,9 +283,9 @@ public class Graph {
 		for (int i = 0; i < n; i++) { // i is the node i want a cycle start and end at.
 			for (int k = i + 1; k < n; k++) { // k is the nodes after node i.
 				pathsb = new LinkedList<Path>();
-				pathb.clear();
-				gainValueb.clear();
-				gainSympolb.clear();
+				getPathb().clear();
+				getGainValueb().clear();
+				getGainSympolb().clear();
 				backwardPaths(i, k);
 				temp = new LinkedList<Path>();
 				path.clear();
@@ -301,18 +339,18 @@ public class Graph {
 
 	@SuppressWarnings("unchecked")
 	public void backwardPaths(int a, int b) { // a is the node i want to go to
-		pathb.add(b);
+		getPathb().add(b);
 		// k is the node i try to find path from
 		if (a == b) {
 			Path p = new Path();
-			p.setNodes((LinkedList<Integer>) pathb.clone());
+			p.setNodes((LinkedList<Integer>) getPathb().clone());
 			float val = 1;
 			String symbol = "";
-			for (int i = 0; i < gainValueb.size(); i++) {
-				val *= gainValueb.get(i);
+			for (int i = 0; i < getGainValueb().size(); i++) {
+				val *= getGainValueb().get(i);
 			}
-			for (int i = 0; i < gainSympolb.size(); i++) {
-				String x = gainSympolb.get(i);
+			for (int i = 0; i < getGainSympolb().size(); i++) {
+				String x = getGainSympolb().get(i);
 				if (x.length() > 0) {
 					if (x.charAt(0) == '-') {
 						val*=-1;
@@ -324,33 +362,57 @@ public class Graph {
 			p.setGain(symbol);
 			p.setGainVal(val);
 			pathsb.add(p);
-			pathb.removeLast();
-			gainValueb.removeLast();
-			gainSympolb.removeLast();
+			getPathb().removeLast();
+			getGainValueb().removeLast();
+			getGainSympolb().removeLast();
 		} else if (b < a) {
-			pathb.removeLast();
-			gainValueb.removeLast();
-			gainSympolb.removeLast();
+			getPathb().removeLast();
+			getGainValueb().removeLast();
+			getGainSympolb().removeLast();
 		} else {
 			for (int i = b - 1; i >= a; i--) {
 				if (graph[b][i] != 0) {
 
 					String c = gain[b][i];
 					if (isNumeric(c)) {
-						gainValueb.add(Float.parseFloat(c));
-						gainSympolb.add("");
+						getGainValueb().add(Float.parseFloat(c));
+						getGainSympolb().add("");
 					} else {
-						gainSympolb.add(c);
-						gainValueb.add((float) 1);
+						getGainSympolb().add(c);
+						getGainValueb().add((float) 1);
 					}
 					backwardPaths(a, i);
 				}
 			}
-			if (gainValueb.size() != 0) {
-				pathb.removeLast();
-				gainValueb.removeLast();
-				gainSympolb.removeLast();
+			if (getGainValueb().size() != 0) {
+				getPathb().removeLast();
+				getGainValueb().removeLast();
+				getGainSympolb().removeLast();
 			}
 		}
+	}
+
+	public LinkedList<Integer> getPathb() {
+		return pathb;
+	}
+
+	public void setPathb(LinkedList<Integer> pathb) {
+		this.pathb = pathb;
+	}
+
+	public LinkedList<Float> getGainValueb() {
+		return gainValueb;
+	}
+
+	public void setGainValueb(LinkedList<Float> gainValueb) {
+		this.gainValueb = gainValueb;
+	}
+
+	public LinkedList<String> getGainSympolb() {
+		return gainSympolb;
+	}
+
+	public void setGainSympolb(LinkedList<String> gainSympolb) {
+		this.gainSympolb = gainSympolb;
 	}
 }

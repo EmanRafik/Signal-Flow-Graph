@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="package1.GuiController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="482.0" prefWidth="601.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="package1.GuiController">
    <children>
       <TextField fx:id="noOfNodes" layoutX="278.0" layoutY="87.0" prefHeight="31.0" prefWidth="106.0" />
       <Label layoutX="50.0" layoutY="87.0" prefHeight="31.0" prefWidth="179.0" text="Enter Number of Nodes">
@@ -28,10 +28,20 @@
       <Label layoutX="331.0" layoutY="201.0" prefHeight="21.0" prefWidth="106.0" text="Gain" />
       <TextField fx:id="gain" layoutX="331.0" layoutY="234.0" prefHeight="31.0" prefWidth="106.0" />
       <Button fx:id="enterEdge" disable="true" layoutX="488.0" layoutY="233.0" mnemonicParsing="false" onAction="#enterEdge" text="Enter" />
-      <Button fx:id="finish" disable="true" layoutX="444.0" layoutY="321.0" mnemonicParsing="false" onAction="#finish" prefHeight="31.0" prefWidth="121.0" text="Finish">
+      <Button fx:id="finish" disable="true" layoutX="449.0" layoutY="398.0" mnemonicParsing="false" onAction="#finish" prefHeight="31.0" prefWidth="121.0" text="Finish">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Button>
+      <Label layoutX="50.0" layoutY="280.0" prefHeight="21.0" prefWidth="236.0" text="Enter 2 Nodes to get paths ">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="secN" layoutX="196.0" layoutY="341.0" prefHeight="31.0" prefWidth="81.0" />
+      <Label layoutX="196.0" layoutY="308.0" prefHeight="21.0" prefWidth="81.0" text="Second Node" />
+      <Label layoutX="68.0" layoutY="307.0" prefHeight="21.0" prefWidth="81.0" text="First Node" />
+      <TextField fx:id="firstN" layoutX="68.0" layoutY="340.0" prefHeight="31.0" prefWidth="81.0" />
+      <Button fx:id="enterPath" disable="true" layoutX="488.0" layoutY="343.0" mnemonicParsing="false" onAction="#enterP" text="Enter" />
    </children>
 </Pane>
