@@ -37,7 +37,7 @@ public class Main {
 				System.out.print(nodes.get(j)+",");
 			}
 			System.out.println("\n");
-			System.out.println("Gain = "+loop.getGainVal());
+			System.out.println("Gain = "+loop.getGainVal()); 
 		}*/
 		
 		

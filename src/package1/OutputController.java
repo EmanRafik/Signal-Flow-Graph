@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
+import javafx.stage.Stage;
 
 public class OutputController {
 
@@ -22,8 +23,13 @@ public class OutputController {
 
 	@FXML
 	public void showGraph(ActionEvent event) {
-		SceneController controller = SceneController.getInstance();
-		controller.showGraph();
+		GraphGui gui = new GraphGui();
+		try {
+			gui.start(new Stage());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -41,7 +47,17 @@ public class OutputController {
 				if (j < p.getNodes().size() - 1) {
 					paths.appendText(",");
 				} else {
-					paths.appendText(")\t Gain = " + p.getGainVal() + " " + p.getGain() + "\n");
+					if (p.getGain().length() > 0) {
+						if (p.getGainVal() == 1) {
+							paths.appendText(")\t Gain = " + p.getGain() + "\n");
+						} else if (p.getGainVal() == -1) {
+							paths.appendText(")\t Gain = -" + p.getGain() + "\n");
+						} else {
+							paths.appendText(")\t Gain = " + p.getGainVal() + " " + p.getGain() + "\n");
+						}
+					} else {
+						paths.appendText(")\t Gain = " + p.getGainVal() + "\n");
+					}
 				}
 			}
 			p.setDelta();
@@ -54,20 +70,30 @@ public class OutputController {
 		for (int i = 0; i < g.getLoops().size(); i++) {
 			Loop l = g.getLoops().get(i);
 			i++;
-			loops.appendText("Loop" + Integer.toString(i)+ ": (");
+			loops.appendText("Loop" + Integer.toString(i) + ": (");
 			i--;
 			for (int j = 0; j < l.getNodes().size(); j++) {
 				loops.appendText(l.getNodes().get(j).toString());
 				if (j < l.getNodes().size() - 1) {
 					loops.appendText(",");
 				} else {
-					loops.appendText(")\t Gain = " + l.getGainVal() + " " + l.getGain() + "\n");
+					if (l.getGain().length() > 0) {
+						if (l.getGainVal() == 1) {
+							loops.appendText(")\t Gain = " + l.getGain() + "\n");
+						} else if (l.getGainVal() == -1) {
+							loops.appendText(")\t Gain = -" + l.getGain() + "\n");
+						} else {
+							loops.appendText(")\t Gain = " + l.getGainVal() + " " + l.getGain() + "\n");
+						}
+					} else {
+						loops.appendText(")\t Gain = " + l.getGainVal() + "\n");
+					}
 				}
 			}
 		}
 		for (int i = 0; i < g.getNonTouchingLoops().size(); i++) {
 			i++;
-			loops.appendText("\n" + Integer.toString(i) + "non-touching loops:\n");
+			loops.appendText("\n" + Integer.toString(i+1) + " non-touching loops:\n");
 			i--;
 			LinkedList<Loop> x = g.getNonTouchingLoops().get(i);
 			for (int j = 0; j < x.size(); j++) {
@@ -102,13 +128,24 @@ public class OutputController {
 			extraPath.appendText("Paths from " + start + "to" + end + "\n");
 			for (int i = 0; i < ePaths.size(); i++) {
 				Path p = ePaths.get(i);
-				extraPath.appendText("Path" + Integer.toString(i+1) + ": (");
+				extraPath.appendText("Path" + Integer.toString(i + 1) + ": (");
 				for (int j = 0; j < p.getNodes().size(); j++) {
 					extraPath.appendText(p.getNodes().get(j).toString());
 					if (j < p.getNodes().size() - 1) {
 						extraPath.appendText(",");
 					} else {
-						extraPath.appendText(")\t Gain = " + p.getGainVal() + " " + p.getGain() + "\n");
+						if (p.getGain().length() > 0) {
+							if (p.getGainVal() == 1) {
+								extraPath.appendText(")\t Gain = " + p.getGain() + "\n");
+							} else if (p.getGainVal() == -1) {
+								extraPath.appendText(")\t Gain = -" + p.getGain() + "\n");
+							} else {
+								extraPath.appendText(")\t Gain = " + p.getGainVal() + " " + p.getGain() + "\n");
+							}
+						} else {
+							extraPath.appendText(")\t Gain = " + p.getGainVal() + "\n");
+						}
+
 					}
 				}
 			}
@@ -124,16 +161,26 @@ public class OutputController {
 			extraPath.appendText("Paths from " + end + "to" + start + "\n");
 			for (int i = 0; i < ePaths.size(); i++) {
 				Path p = ePaths.get(i);
-				extraPath.appendText("Path" + Integer.toString(i+1) + ": (");
+				extraPath.appendText("Path" + Integer.toString(i + 1) + ": (");
 				for (int j = 0; j < p.getNodes().size(); j++) {
 					extraPath.appendText(p.getNodes().get(j).toString());
 					if (j < p.getNodes().size() - 1) {
 						extraPath.appendText(",");
 					} else {
-						extraPath.appendText(")\t Gain = " + p.getGainVal() + " " + p.getGain() + "\n");
+						if (p.getGain().length() > 0) {
+							if (p.getGainVal() == 1) {
+								extraPath.appendText(")\t Gain = " + p.getGain() + "\n");
+							} else if (p.getGainVal() == -1) {
+								extraPath.appendText(")\t Gain = -" + p.getGain() + "\n");
+							} else {
+								extraPath.appendText(")\t Gain = " + p.getGainVal() + " " + p.getGain() + "\n");
+							}
+						} else {
+							extraPath.appendText(")\t Gain = " + p.getGainVal() + "\n");
+						}
 					}
 				}
-			}	
+			}
 		}
 	}
 }

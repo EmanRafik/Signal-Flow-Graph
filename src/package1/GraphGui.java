@@ -5,6 +5,7 @@ import javafx.geometry.NodeOrientation;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -16,9 +17,7 @@ import javafx.stage.Stage;
 
 public class GraphGui extends Application {
 
-	private Graph g = Graph.getInstance();
-	private int[][] graph = g.getGraph();
-	private String[][] gain = g.getGain();
+	private Graph gr = Graph.getInstance();
 	private final int  startX = 100;
 	private final int startY = 350;
 	private final int space = 200;
@@ -28,15 +27,17 @@ public class GraphGui extends Application {
 	private final double strokeWidth = 2;
 	
 	
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Application.launch(args);
 	}
-
+*/
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
+		ScrollPane sp = new ScrollPane();
 		Group root = new Group();
+		Group r = new Group();
 		Scene scene = new Scene(root,400,500);
 		primaryStage.setScene(scene);
 		
@@ -49,6 +50,8 @@ public class GraphGui extends Application {
         primaryStage.setHeight(primaryScreenBounds.getHeight());
 		
         Group g = new Group();
+        int[][] graph = gr.getGraph();
+    	String[][] gain = gr.getGain();
         
         for (int i = 0; i < graph.length; i++) {
         	Circle c = new Circle();
@@ -59,6 +62,12 @@ public class GraphGui extends Application {
         	c.setStrokeWidth(strokeWidth);
         	c.setStroke(Color.BLACK);
         	g.getChildren().add(c);
+        	
+        	Text t = new Text();
+        	t.setText(Integer.toString(i));
+        	t.setX(startX + i*space);
+        	t.setY(startY);
+        	g.getChildren().add(t);
         }
         for (int i = 0; i < graph.length; i++) {
         	for (int j = 0; j < graph.length; j++) {
@@ -168,7 +177,16 @@ public class GraphGui extends Application {
         		}
         	}
         }
-        root.getChildren().add(g);
+        r.getChildren().add(g);
+        //root.getChildren().add(g);
+        sp.setPannable(true);
+        sp.setPrefSize(primaryScreenBounds.getWidth()-50, primaryScreenBounds.getHeight()-50);
+        r.setLayoutX(startX);
+        r.setLayoutY(startY);
+        sp.setContent(r);
+        sp.setFitToWidth(true);
+        sp.setFitToHeight(true);
+        root.getChildren().add(sp);
 		primaryStage.show();
 	}
 

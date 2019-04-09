@@ -3,6 +3,7 @@ package package1;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+
 public class Delta {
 
 	private LinkedList<Loop> loops;
@@ -68,6 +69,7 @@ public class Delta {
 						nonTouchingLoop.setGainVal(second.getGainVal() * first.getGainVal());
 						nonTouchingLoop.getNonTouching().add(i);
 						nonTouchingLoop.getNonTouching().add(j);
+						java.util.Collections.sort(nonTouchingLoop.getNonTouching());
 						nonTouching.add(nonTouchingLoop);
 					}
 				}
@@ -101,6 +103,7 @@ public class Delta {
 					for (int z = 0; z < second.getNonTouching().size(); z++) {
 						nonTouchingLoop.getNonTouching().add(second.getNonTouching().get(z));
 					}
+					java.util.Collections.sort(nonTouchingLoop.getNonTouching());
 					nonTouching.add(nonTouchingLoop);
 				}
 			}
@@ -129,6 +132,14 @@ public class Delta {
 		getNonTouchingLoops(loops);
 		flag = true;
 		while (!nonTouching.isEmpty()) {
+			for (int i = 0; i < nonTouching.size(); i++) {
+				for (int j = i+1; j < nonTouching.size(); j++) {
+					if (nonTouching.get(i).getNonTouching().equals(nonTouching.get(j).getNonTouching())) {
+						nonTouching.remove(j);
+						j--;
+					}
+				}
+			}
 			combination.add((LinkedList<Loop>) nonTouching.clone());
 			for (int i = 0; i < nonTouching.size(); i++) {
 				Loop x = nonTouching.get(i);

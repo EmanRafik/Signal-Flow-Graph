@@ -12,9 +12,16 @@ public class Graph {
 	private LinkedList<Path> paths = new LinkedList<Path>();
 	private LinkedList<Path> temp = new LinkedList<Path>();
 	private LinkedList<Loop> loops = new LinkedList<Loop>();
-	private int n = 5;
-	private int[][] graph; 
-	private String[][] gain; 
+	private int n = 4;
+	// private int[][] graph;
+	// private String[][] gain;
+	///
+	private int[][] graph = { { 0, 1, 0, 0 }, { 0, 0, 1, 1 }, { 0, 1, 0, 1 }, { 0, 1, 1, 0 } };
+	private String[][] gain = { { "0", "1", "0", "0" }, { "0", "0", "1", "1" }, { "0", "-1", "0", "1" },
+			{ "0", "-1", "-1", "0" } };
+	Path pathmain = new Path();
+	LinkedList<Integer> nodes = new LinkedList<Integer>();
+	///
 	private LinkedList<Integer> path = new LinkedList<Integer>();
 	private LinkedList<String> gainSympol = new LinkedList<String>();
 	private LinkedList<Float> gainValue = new LinkedList<Float>();
@@ -24,6 +31,7 @@ public class Graph {
 	private LinkedList<Path> pathsb = new LinkedList<Path>();
 	@SuppressWarnings("rawtypes")
 	private LinkedList<Pair> reqP = new LinkedList<Pair>();
+
 	@SuppressWarnings("rawtypes")
 	public LinkedList<Pair> getReqP() {
 		return reqP;
@@ -112,74 +120,57 @@ public class Graph {
 	}
 
 	public String transferFunction() {
+		String s = String.valueOf(delta.getValue()) + delta.getSymbol();
 		String tf = "";
 		String temp = "";
-		float value =0;
+		float value = 0;
 		for (int i = 0; i < paths.size(); i++) {
 			Path p = paths.get(i);
 			if (p.getGain().length() == 0 && p.getDelta().getSymbol().length() == 0) {
-				value+=p.getGainVal()*p.getDelta().getValue();
-			} else {
-				float f = p.getGainVal()*p.getDelta().getValue();
-				if (p.getGain().length() > 0) {
-					if (p.getGain().charAt(0) == '-') {
-						f*=-1;
-						p.setGain(p.getGain().substring(1));
-					}
-				}
-				if (p.getDelta().getSymbol().length() > 0) {
-					 if(p.getDelta().getSymbol().charAt(0) == '-') {
-						 f*=-1;
-						 p.getDelta().setSymbol(p.getDelta().getSymbol().substring(1));
-					 }
-				}
-				if ( f == 1) {
-					if (i > 0) {
-						temp += "+";
-					}
-					temp += p.getGain() + p.getDelta().getSymbol();
-				} else if (f == -1) {
-					temp += "-" + p.getGain() + p.getDelta().getSymbol();
+				value += p.getGainVal()*p.getDelta().getValue();
+			} else if (p.getGain().length() == 0) {
+				String d = String.valueOf(p.getDelta().getValue()) + p.getDelta().getSymbol();
+				if (p.getGainVal() == 1) {
+					temp += "("+d+")";
+				} else if (p.getGainVal() == -1) {
+					temp+="((-)"+"("+d+"))";
 				} else {
-					temp += String.valueOf(f) + p.getGain() + p.getDelta().getSymbol();
+					temp+="("+String.valueOf(p.getGainVal())+"("+d+"))";
 				}
+			} else if (p.getDelta().getSymbol().length() == 0) {
+				temp += String.valueOf(p.getGainVal()*p.getDelta().getValue()) + p.getGain();
+			} else {
+				String d = String.valueOf(p.getDelta().getValue()) + p.getDelta().getSymbol();
+				String pGain;
+				if (p.getGainVal() == 1) {
+					pGain = p.getGain();
+				} else if (p.getGainVal() == -1) {
+					pGain = "-" + p.getGain();
+				} else {
+					pGain = String.valueOf(p.getGainVal()) + p.getGain();
+				}
+				temp += "(" + pGain + ")(" + d + ")";
 			}
-			
 		}
 		if (temp.length() == 0 && delta.getSymbol().length() == 0) {
 			tf = String.valueOf(value/delta.getValue());
 		} else if (temp.length() == 0) {
-			String s;
-			if (delta.getValue() == 1) {
-				s = delta.getSymbol();
-			} else if (delta.getValue() == -1) {
-				value *= -1;
-				s = delta.getSymbol();
-			} else {
-				s = String.valueOf(delta.getValue()) + delta.getSymbol();
-			}
 			tf = String.valueOf(value) + "/" + s;
-		} else if (delta.getSymbol().length() == 0) {
-			if (value != 0) {
-				tf = "(" + String.valueOf(value) + temp + ")/" + delta.getValue();
-			}
 		} else {
-			String s;
-			if (delta.getValue() == 1) {
-				s = delta.getSymbol();
-			} else if (delta.getValue() == -1) {
-				s = "-" + delta.getSymbol();
+			if (value != 0) {
+				tf = "(" + String.valueOf(value) + temp + ")/(" + s + ")";
 			} else {
-				s = String.valueOf(delta.getValue()) + delta.getSymbol();
+				tf = "(" + temp + ")/(" + s + ")";
 			}
-			tf = "(" + String.valueOf(value) + temp + ")/" + s;
 		}
 		return tf;
 	}
+
 	@SuppressWarnings("unchecked")
 	public void setPaths() {
-		paths = (LinkedList<Path>) path(0,n-1).clone();
+		paths = (LinkedList<Path>) path(0, n - 1).clone();
 	}
+
 	@SuppressWarnings("unchecked")
 	public LinkedList<Path> path(int a, int b) {
 		path.add(a);
@@ -195,7 +186,7 @@ public class Graph {
 				String x = gainSympol.get(i);
 				if (x.length() > 0) {
 					if (x.charAt(0) == '-') {
-						val*=-1;
+						val *= -1;
 						x = x.substring(1);
 					}
 				}
@@ -232,7 +223,7 @@ public class Graph {
 				gainSympol.removeLast();
 			}
 		}
-			//paths = (LinkedList<Path>) temp.clone();
+		// paths = (LinkedList<Path>) temp.clone();
 		return temp;
 	}
 
@@ -353,7 +344,7 @@ public class Graph {
 				String x = getGainSympolb().get(i);
 				if (x.length() > 0) {
 					if (x.charAt(0) == '-') {
-						val*=-1;
+						val *= -1;
 						x = x.substring(1);
 					}
 				}
